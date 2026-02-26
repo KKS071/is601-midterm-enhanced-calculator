@@ -82,8 +82,8 @@ Supported Commands:
 
 ### 1. Clone Repository
 
-git clone <repository-url>
-cd <repository-directory>
+git clone <repository-url>\
+cd <repository-directory>\
 
 ### 2. Create Virtual Environment
 
