@@ -87,8 +87,9 @@ cd <repository-directory>
 
 ### 2. Create Virtual Environment
 
-python3 -m venv venv source venv/bin/activate (Mac/Linux)
-venv`\Scripts`{=tex}`\activate     `{=tex}(Windows)
+python3 -m venv venv
+source venv/bin/activate   # Mac/Linux
+venv\Scripts\activate.bat  # Windows
 
 ### 3. Install Dependencies
 
@@ -100,9 +101,12 @@ pip install -r requirements.txt
 
 Create a `.env` file in the project root:
 
-CALCULATOR_LOG_DIR=logs CALCULATOR_HISTORY_DIR=history
-CALCULATOR_MAX_HISTORY_SIZE=100 CALCULATOR_AUTO_SAVE=true
-CALCULATOR_PRECISION=4 CALCULATOR_MAX_INPUT_VALUE=1000000
+CALCULATOR_LOG_DIR=logs
+CALCULATOR_HISTORY_DIR=history
+CALCULATOR_MAX_HISTORY_SIZE=100
+CALCULATOR_AUTO_SAVE=true
+CALCULATOR_PRECISION=4 
+CALCULATOR_MAX_INPUT_VALUE=1000000
 CALCULATOR_DEFAULT_ENCODING=utf-8
 
 ------------------------------------------------------------------------
@@ -154,5 +158,5 @@ Handles:
 ## Author
 
 Kundan Singh\
-IS601 -- Web Systems Development\
+IS601 -- Python for Web API Development\
 Spring 2026
