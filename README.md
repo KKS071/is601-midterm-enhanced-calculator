@@ -82,9 +82,8 @@ Supported Commands:
 
 ### 1. Clone Repository
 
-git clone
-https://github.com/yourusername/is601-midterm-enhanced-calculator.git cd
-is601-midterm-enhanced-calculator
+git clone <repository-url>
+cd <repository-directory>
 
 ### 2. Create Virtual Environment
 
