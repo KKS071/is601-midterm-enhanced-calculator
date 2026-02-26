@@ -91,14 +91,15 @@ cd <repository-directory>
 
 ### 2. Create Virtual Environment
 
+```bash
 python3 -m venv venv
 source venv/bin/activate   # Mac/Linux
 venv\Scripts\activate.bat  # Windows
-
+```
 ### 3. Install Dependencies
-
+```bash
 pip install -r requirements.txt
-
+```
 ------------------------------------------------------------------------
 
 ## Configuration (.env Setup)
@@ -118,9 +119,9 @@ CALCULATOR_DEFAULT_ENCODING=utf-8
 ## Testing & Coverage
 
 Run tests:
-
+```bash
 pytest
-
+```
 Run with coverage:
 
 pytest --cov=app --cov-report=term
