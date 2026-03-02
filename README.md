@@ -1,167 +1,176 @@
-# IS601 Midterm Project
+# Assignment 6 Midterm Project – Professional Calculator REPL
 
-## Advanced Calculator Command-Line Application
+This project implements a **Professional Calculator REPL** in Python, demonstrating **object-oriented programming**, **factory design patterns**, **error handling**, and **unit testing**.
 
-Developed for IS601 -- Web Systems Development.
+It builds upon the basic calculator assignments from previous homework, using the same **requirements.txt** and configuration setup for virtual environments, testing, and linting.
 
-------------------------------------------------------------------------
+---
 
-## Project Overview
+## Features
 
-This advanced calculator application implements:
+1. **REPL Calculator**
 
--   Advanced arithmetic operations
--   Factory, Memento, and Observer design patterns
--   Undo/Redo functionality
--   Logging and auto-save observers
--   CSV-based history persistence using pandas
--   Environment-based configuration management
--   Robust error handling with custom exceptions
--   Comprehensive unit testing (≥ 90% coverage)
--   GitHub Actions CI pipeline
+   * Perform basic arithmetic operations: `add`, `subtract`, `multiply`, `divide`.
+   * Supports floating-point numbers.
+   * Handles invalid inputs gracefully using **EAFP** and **LBYL** programming paradigms.
 
-------------------------------------------------------------------------
+2. **Calculation Classes**
 
-## Design Patterns Implemented
+   * `Calculation` abstract base class defines a consistent interface for all operations.
+   * Concrete subclasses: `AddCalculation`, `SubtractCalculation`, `MultiplyCalculation`, `DivideCalculation`.
+   * Factory pattern via `CalculationFactory` allows dynamic creation of calculation objects.
 
-### Factory Pattern
+3. **Operations Module**
 
-Used to dynamically create operation objects.
+   * `Operation` class implements static methods: `addition`, `subtraction`, `multiplication`, `division`.
+   * Division by zero is checked at the **operation level**, preventing runtime errors.
 
-### Memento Pattern
+4. **History and Help**
 
-Implements undo and redo functionality.
+   * `history` command shows a list of all calculations performed in the session.
+   * `help` command displays usage instructions and supported operations.
 
-### Observer Pattern
+5. **Error Handling**
 
--   LoggingObserver → Logs calculation details\
--   AutoSaveObserver → Automatically saves history to CSV
+   * Invalid input, unknown operations, and division by zero are all handled gracefully.
+   * Supports **KeyboardInterrupt (Ctrl+C)** and **EOF (Ctrl+D)** for exiting.
 
-------------------------------------------------------------------------
+6. **Unit Tests**
 
-## Supported Operations
+   * `pytest` tests for all modules:
 
-Each operation takes exactly two numerical inputs:
+     * `test_operations.py` – tests the arithmetic operations.
+     * `test_calculation.py` – tests the calculation classes and factory.
+     * `test_calculator.py` – tests the REPL flow, including history, help, and error handling.
 
--   add
--   subtract
--   multiply
--   divide
--   power
--   root
--   modulus
--   int_divide
--   percent
--   abs_diff
+---
 
-------------------------------------------------------------------------
+## Project Structure
 
-## Command-Line Interface (REPL)
-
-Supported Commands:
-
--   add, subtract, multiply, divide
--   power
--   root
--   modulus
--   int_divide
--   percent
--   abs_diff
--   history
--   clear
--   undo
--   redo
--   save
--   load
--   help
--   exit
-
-------------------------------------------------------------------------
-
-## Installation & Setup
-
-### 1. Clone Repository
-
-```bash
-git clone <repository-url>
-cd <repository-directory>
+```
+assignment6-midterm/
+│
+├── app/
+│   ├── operations.py
+│   ├── calculation.py
+│   └── calculator.py
+│
+├── tests/
+│   ├── test_operations.py
+│   ├── test_calculation.py
+│   └── test_calculator.py
+│
+├── requirements.txt   # Reused from previous assignments
+├── pytest.ini         # Reused basic configuration
+└── README.md
 ```
 
 ---
 
-### 2. Create Virtual Environment
+## Getting Started
 
-```bash
-python3 -m venv venv
-source venv/bin/activate   # Mac/Linux
-venv\Scripts\activate.bat  # Windows
+1. **Create virtual environment** (if not already done in previous homework):
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # Linux/Mac
+   venv\Scripts\activate     # Windows
+   ```
+
+2. **Install dependencies**:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Run the Calculator REPL**:
+
+   ```bash
+   python3 main.py
+   ```
+
+4. **Run Tests**:
+
+   ```bash
+   pytest
+   ```
+
+---
+
+## Example REPL Session
+
 ```
-### 3. Install Dependencies
-```bash
-pip install -r requirements.txt
+Welcome to the Professional Calculator REPL!
+Type 'help' for instructions or 'exit' to quit.
+
+>> add 2 3
+Result: AddCalculation: 2.0 Add 3.0 = 5.0
+
+>> divide 10 0
+Error: division by zero is not allowed.
+
+>> history
+1. AddCalculation: 2.0 Add 3.0 = 5.0
+
+>> help
+Calculator Help
+---------------
+Format:
+    <operation> <number1> <number2>
+Supported operations:
+    add
+    subtract
+    multiply
+    divide
+Special commands:
+    history
+    help
+    exit
+Example:
+    add 5 10
+
+>> exit
+Goodbye!
 ```
-------------------------------------------------------------------------
 
-## Configuration (.env Setup)
+---
 
-Create a `.env` file in the project root:
+## Development Notes
 
-CALCULATOR_LOG_DIR=logs \
-CALCULATOR_HISTORY_DIR=history \
-CALCULATOR_MAX_HISTORY_SIZE=100 \
-CALCULATOR_AUTO_SAVE=true\
-CALCULATOR_PRECISION=4 \
-CALCULATOR_MAX_INPUT_VALUE=1000000 \
-CALCULATOR_DEFAULT_ENCODING=utf-8
+### LBYL vs EAFP
 
-------------------------------------------------------------------------
+* **LBYL (Look Before You Leap)** – Check inputs or conditions before performing an operation (e.g., verifying operands before creating a calculation).
+* **EAFP (Easier to Ask Forgiveness than Permission)** – Attempt an operation and handle exceptions if they occur (e.g., catching `ValueError` from unsupported operations).
+* This project uses **both paradigms** for robust and Pythonic error handling.
 
-## Testing & Coverage
+### Factory Pattern
 
-Run tests:
-```bash
-pytest
+* `CalculationFactory` dynamically creates calculation objects based on a string identifier (`add`, `subtract`, etc.).
+* Adding new operations (like `power`) requires **minimal code changes**: register a new subclass with the factory.
+
+### Class Hierarchy
+
 ```
-Run with coverage:
+Calculation (ABC)
+│
+├── AddCalculation
+├── SubtractCalculation
+├── MultiplyCalculation
+└── DivideCalculation
+```
 
-pytest --cov=app --cov-report=term
+* All subclasses implement the abstract `execute()` method.
+* The `__str__()` method of `Calculation` standardizes output formatting for all operations.
 
-CI enforces minimum 90% coverage.
+### Error Handling
 
-------------------------------------------------------------------------
+* **Division by zero** is checked centrally in `Operation.division()`.
+* REPL captures all **unexpected errors**, prints a friendly message, and continues running.
 
-## Continuous Integration
+---
 
-GitHub Actions automatically:
+## Notes
 
--   Installs dependencies
--   Runs tests
--   Enforces coverage threshold
-
-Workflow file:
-
-.github/workflows/python-app.yml
-
-------------------------------------------------------------------------
-
-## Error Handling
-
-Custom exceptions implemented:
-
--   OperationError
--   ValidationError
-
-Handles:
-
--   Division by zero
--   Invalid inputs
--   Out-of-range values
--   Malformed CSV files
-
-------------------------------------------------------------------------
-
-## Author
-
-Kundan Singh\
-IS601 -- Python for Web API Development\
-Spring 2026
+* All **requirements.txt** and configuration files are reused from previous homework assignments.
+* The project emphasizes **clean, modular design**, **error handling**, and **unit testing** best practices.
+* The REPL interface is designed to be **user-friendly** and **extensible** for future operations.
