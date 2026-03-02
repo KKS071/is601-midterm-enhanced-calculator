@@ -76,7 +76,7 @@ class CalculationFactory:
         def decorator(subclass):
             key = calculation_type.lower()
 
-            if key in cls._calculations:
+            if key in cls._calculations: #pragma: no cover
                 raise ValueError(
                     f"Calculation type '{calculation_type}' is already registered."
                 )

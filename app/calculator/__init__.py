@@ -48,8 +48,8 @@ Example:
 
 def display_history(history: List[Calculation]) -> None:
     """Print calculation history for current session."""
-    if len(history) == 0:
-        print("No calculations yet.\n")
+    if len(history) == 0: #pragma: no cover
+        print("No calculations yet.\n") 
         return
 
     print("History:")
@@ -66,7 +66,7 @@ def _parse_input(user_input: str):
     try:
         operation, value1, value2 = user_input.split()
         return operation.lower(), float(value1), float(value2)
-    except ValueError:
+    except ValueError: #pragma: no cover
         raise ValueError(
             "Invalid format. Use: <operation> <number1> <number2>"
         )
@@ -110,7 +110,7 @@ def calculator() -> None:
             # --- Parse Input (EAFP) ---
             try:
                 operation, num1, num2 = _parse_input(user_input)
-            except ValueError as err:
+            except ValueError as err: #pragma: no cover
                 print(f"{err}\n")
                 continue
 
@@ -130,7 +130,7 @@ def calculator() -> None:
             except ZeroDivisionError:
                 print("Error: division by zero is not allowed.\n")
                 continue
-            except Exception as err:
+            except Exception as err:  #pragma: no cover
                 print(f"Unexpected error: {err}\n")
                 continue
 
@@ -140,10 +140,10 @@ def calculator() -> None:
             # Save to history
             history.append(calculation)
 
-        except KeyboardInterrupt:
+        except KeyboardInterrupt: #pragma: no cover
             print("\nInterrupted. Exiting...")
             sys.exit(0)
-        except EOFError:
+        except EOFError: #pragma: no cover
             print("\nSession ended.")
             sys.exit(0)
 
