@@ -1,176 +1,251 @@
-# Assignment 6 Midterm Project – Professional Calculator REPL
+Got it! Here’s a fully updated `README.md` including the **`.env` usage** and **reuse of previous assignment files**:
 
-This project implements a **Professional Calculator REPL** in Python, demonstrating **object-oriented programming**, **factory design patterns**, **error handling**, and **unit testing**.
+---
 
-It builds upon the basic calculator assignments from previous homework, using the same **requirements.txt** and configuration setup for virtual environments, testing, and linting.
+# Interactive Python Calculator
+
+## Overview
+
+This project is an **interactive Python calculator** implemented in a modular and extensible way. It demonstrates advanced Python concepts such as the **Factory Pattern**, **Observer Pattern**, **Memento Pattern**, **custom exceptions**, and **history tracking**. The calculator can perform basic arithmetic operations and supports **history logging**, **auto-save**, and **unit testing** for all functionality.
 
 ---
 
 ## Features
 
-1. **REPL Calculator**
+* **Basic Arithmetic Operations**
 
-   * Perform basic arithmetic operations: `add`, `subtract`, `multiply`, `divide`.
-   * Supports floating-point numbers.
-   * Handles invalid inputs gracefully using **EAFP** and **LBYL** programming paradigms.
+  * Addition, Subtraction, Multiplication, Division
+  * Easy to extend via the **Factory Pattern** for new operations
 
-2. **Calculation Classes**
+* **Interactive REPL**
 
-   * `Calculation` abstract base class defines a consistent interface for all operations.
-   * Concrete subclasses: `AddCalculation`, `SubtractCalculation`, `MultiplyCalculation`, `DivideCalculation`.
-   * Factory pattern via `CalculationFactory` allows dynamic creation of calculation objects.
+  * Users can interactively input calculations
+  * Supports commands like `help` and `history`
 
-3. **Operations Module**
+* **Operation Factory**
 
-   * `Operation` class implements static methods: `addition`, `subtraction`, `multiplication`, `division`.
-   * Division by zero is checked at the **operation level**, preventing runtime errors.
+  * Dynamically creates arithmetic operation objects
+  * Encourages clean, extensible design
 
-4. **History and Help**
+* **History Tracking**
 
-   * `history` command shows a list of all calculations performed in the session.
-   * `help` command displays usage instructions and supported operations.
+  * Stores each calculation performed
+  * Supports multiple observers:
 
-5. **Error Handling**
+    * **LoggingObserver** – logs calculations
+    * **AutoSaveObserver** – automatically saves history
+  * Implements **Observer Pattern** for easy addition of more observers
 
-   * Invalid input, unknown operations, and division by zero are all handled gracefully.
-   * Supports **KeyboardInterrupt (Ctrl+C)** and **EOF (Ctrl+D)** for exiting.
+* **Memento Pattern**
 
-6. **Unit Tests**
+  * Supports saving and restoring calculator state
+  * Useful for undo/redo operations
 
-   * `pytest` tests for all modules:
+* **Custom Exceptions**
 
-     * `test_operations.py` – tests the arithmetic operations.
-     * `test_calculation.py` – tests the calculation classes and factory.
-     * `test_calculator.py` – tests the REPL flow, including history, help, and error handling.
+  * Graceful handling of divide-by-zero and invalid inputs
+  * Demonstrates Python’s `try-except` and EAFP/LBYL approaches
+
+* **Logging**
+
+  * Calculation events are logged
+  * Observers log messages automatically for monitoring
+
+* **Auto-Save**
+
+  * Automatically saves history to a file if enabled
+  * Exceptions during auto-save are caught internally
+
+* **.env File Support**
+
+  * Configuration such as `BASE_DIR` for history files can be loaded from a `.env` file
+  * Example `.env`:
+
+    ```env
+    BASE_DIR=/path/to/calculator/data
+    AUTO_SAVE=True
+    LOG_LEVEL=INFO
+    ```
+
+* **Testing**
+
+  * Comprehensive **pytest** test coverage
+  * Includes `pytest-cov` for measuring coverage
+  * Includes a test to validate **import integrity**
 
 ---
 
 ## Project Structure
 
-```
-assignment6-midterm/
+```text
+calculator-project/
 │
 ├── app/
-│   ├── operations.py
+│   ├── __init__.py
 │   ├── calculation.py
-│   └── calculator.py
+│   ├── calculator.py
+│   ├── calculator_config.py
+│   ├── calculator_memento.py
+│   ├── calculator_repl.py
+│   ├── exceptions.py
+│   ├── history.py
+│   ├── input_validators.py
+│   └── operations.py
 │
 ├── tests/
-│   ├── test_operations.py
 │   ├── test_calculation.py
-│   └── test_calculator.py
-│
-├── requirements.txt   # Reused from previous assignments
-├── pytest.ini         # Reused basic configuration
+│   ├── test_calculator.py
+│   ├── test_calculator_config.py
+│   ├── test_calculator_memento.py
+│   ├── test_exceptions.py
+│   ├── test_history.py
+│   ├── test_imports.py
+│   ├── test_input_validator.py
+│   └── test_operations.py
+├── .env
+├── LICENSE
+├── .coverage
+├── .coveragerc
+├── pytest.ini
+├── requirements.txt
+├── venv/
 └── README.md
 ```
 
----
-
-## Getting Started
-
-1. **Create virtual environment** (if not already done in previous homework):
-
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # Linux/Mac
-   venv\Scripts\activate     # Windows
-   ```
-
-2. **Install dependencies**:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Run the Calculator REPL**:
-
-   ```bash
-   python3 main.py
-   ```
-
-4. **Run Tests**:
-
-   ```bash
-   pytest
-   ```
+> **Note:** I have reused a few files from previous assignment examples: `LICENSE`, `.coverage`, `.coveragerc`, `pytest.ini`, `requirements.txt`.
 
 ---
 
-## Example REPL Session
+## Installation
 
+1. **Clone the repository**
+
+```bash
+git clone <repository-url>
+cd <repository-directory>
 ```
-Welcome to the Professional Calculator REPL!
-Type 'help' for instructions or 'exit' to quit.
 
->> add 2 3
-Result: AddCalculation: 2.0 Add 3.0 = 5.0
+2. **Create and activate a virtual environment**
 
->> divide 10 0
-Error: division by zero is not allowed.
+```bash
+python3 -m venv venv
+source venv/bin/activate  # Linux/macOS
+venv\Scripts\activate     # Windows
+```
 
->> history
-1. AddCalculation: 2.0 Add 3.0 = 5.0
+3. **Install dependencies**
 
->> help
-Calculator Help
----------------
-Format:
-    <operation> <number1> <number2>
-Supported operations:
-    add
-    subtract
-    multiply
-    divide
-Special commands:
-    history
-    help
-    exit
-Example:
-    add 5 10
+```bash
+pip install -r requirements.txt
+```
 
->> exit
-Goodbye!
+4. **Setup `.env` file**
+
+Create a `.env` file in the project root with configuration:
+
+```env
+BASE_DIR=/path/to/calculator/data
+AUTO_SAVE=True
+LOG_LEVEL=INFO
 ```
 
 ---
 
-## Development Notes
+## Usage
 
-### LBYL vs EAFP
+1. **Run the Calculator interface**
 
-* **LBYL (Look Before You Leap)** – Check inputs or conditions before performing an operation (e.g., verifying operands before creating a calculation).
-* **EAFP (Easier to Ask Forgiveness than Permission)** – Attempt an operation and handle exceptions if they occur (e.g., catching `ValueError` from unsupported operations).
-* This project uses **both paradigms** for robust and Pythonic error handling.
-
-### Factory Pattern
-
-* `CalculationFactory` dynamically creates calculation objects based on a string identifier (`add`, `subtract`, etc.).
-* Adding new operations (like `power`) requires **minimal code changes**: register a new subclass with the factory.
-
-### Class Hierarchy
-
-```
-Calculation (ABC)
-│
-├── AddCalculation
-├── SubtractCalculation
-├── MultiplyCalculation
-└── DivideCalculation
+```bash
+python3 -m main.py
 ```
 
-* All subclasses implement the abstract `execute()` method.
-* The `__str__()` method of `Calculation` standardizes output formatting for all operations.
+2. **Perform Operations**
 
-### Error Handling
+* Example commands:
 
-* **Division by zero** is checked centrally in `Operation.division()`.
-* REPL captures all **unexpected errors**, prints a friendly message, and continues running.
+```text
+> add
+> subtract
+> power
+> history      # Show previous calculations
+> help         # Show help menu and list of all available commands.
+> exit         # Exit calculator
+```
+
+3. **Environment Configuration**
+
+* `CALCULATOR_LOG_DIR` – Directory for log files.
+* `CALCULATOR_HISTORY_DIR` – Directory for history files.
+* `CALCULATOR_MAX_HISTORY_SIZE` – Maximum number of history entries.
+* `CALCULATOR_PRECISION` - Number of decimal places for calculations.
+* `CALCULATOR_MAX_INPUT_VALUE` - Maximum allowed input value.
+* `CALCULATOR_DEFAULT_ENCODING` - Default encoding for file operations.
+
+The calculator reads these values from the `.env` file using Python's `os.environ`.
 
 ---
 
-## Notes
+## Features in Action
 
-* All **requirements.txt** and configuration files are reused from previous homework assignments.
-* The project emphasizes **clean, modular design**, **error handling**, and **unit testing** best practices.
-* The REPL interface is designed to be **user-friendly** and **extensible** for future operations.
+### 1. REPL Interaction
+
+![REPL Example](docs/repl_example.gif)
+
+### 2. History Tracking
+
+![History Logging](docs/history_example.png)
+
+### 3. Auto-Save Observer
+
+![Auto-Save](docs/auto_save_example.png)
+
+### 4. Logging Observer
+
+![Logging Observer](docs/logging_example.png)
+
+---
+
+## Testing
+
+* **Run all tests**
+
+```bash
+pytest
+```
+
+* **Run tests with coverage**
+
+```bash
+pytest --cov=app --cov-report=html
+```
+
+* **Notes**
+
+  * All observers, history tracking, and exceptions are fully tested
+  * `# pragma: no cover` is used where automated testing is impractical (e.g., interactive REPL input)
+  * Used coloroama to add colors to the calculator output.
+
+---
+
+## Design Patterns Used
+
+* **Factory Pattern** – For creating operation objects dynamically
+* **Observer Pattern** – For notifying logging and auto-save observers
+* **Memento Pattern** – For saving/restoring calculator state (undo/redo)
+
+---
+
+## Contributing
+
+* Clone the repo, create a branch, implement features or fixes
+* Run all tests before creating a pull request
+* Follow **PEP8** styling and maintain modularity
+
+---
+
+## License
+
+This project is for **educational purposes** and course assignments.
+No commercial license granted. For more details, please read LICENSE file.
+
+---
