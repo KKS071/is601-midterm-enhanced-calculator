@@ -12,6 +12,7 @@ This project is an **interactive Python calculator** implemented in a modular an
 
 * **Supported Arithmetic Operations**
 
+  * Used "coloroama" to display colored output of calculator.
   * Supported Commands:
   * add, subtract, multiply, divide, power, root, modulus, int_divide, percent, abs_diff – Perform calculations.
   * history – Display calculation history.
