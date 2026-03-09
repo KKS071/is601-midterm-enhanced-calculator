@@ -1,5 +1,3 @@
-Got it! Here’s a fully updated `README.md` including the **`.env` usage** and **reuse of previous assignment files**:
-
 ---
 
 # Interactive Python Calculator
