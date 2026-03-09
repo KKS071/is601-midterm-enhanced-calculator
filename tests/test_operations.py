@@ -1,76 +1,48 @@
 import pytest
-from app.operations import Operation
-
-# -----------------------------
-# Test data for addition
-# -----------------------------
-@pytest.mark.parametrize(
-    "a,b,expected",
-    [
-        (1, 2, 3),
-        (-1, 5, 4),
-        (0, 0, 0),
-        (1.5, 2.5, 4.0),
-    ]
+from decimal import Decimal
+from app.operations import (
+    Add, Subtract, Multiply, Divide, Power, Root, Modulus, IntDivide,
+    Percent, AbsDiff, OperationFactory, Operation
 )
-def test_addition(a, b, expected):
-    assert Operation.addition(a, b) == expected
+from app.exceptions import OperationError
 
-# -----------------------------
-# Test data for subtraction
-# -----------------------------
-@pytest.mark.parametrize(
-    "a,b,expected",
-    [
-        (5, 3, 2),
-        (0, 5, -5),
-        (-3, -2, -1),
-        (2.5, 1.0, 1.5),
-    ]
-)
-def test_subtraction(a, b, expected):
-    assert Operation.subtraction(a, b) == expected
+@pytest.mark.parametrize("op_class,a,b,expected", [
+    (Add, 5, 3, 8),
+    (Subtract, 5, 3, 2),
+    (Multiply, 5, 3, 15),
+    (Divide, 6, 3, 2),
+    (Power, 2, 3, 8),
+    (Root, 9, 2, 3),
+    (Modulus, 5, 3, 2),
+    (IntDivide, 7, 3, 2),
+    (Percent, 50, 10, 5),
+    (AbsDiff, 5, 10, 5),
+])
+def test_operation_execute(op_class, a, b, expected):
+    op = op_class()
+    result = op.execute(a, b)
+    assert result == expected
 
-# -----------------------------
-# Test data for multiplication
-# -----------------------------
-@pytest.mark.parametrize(
-    "a,b,expected",
-    [
-        (2, 3, 6),
-        (-2, 3, -6),
-        (0, 5, 0),
-        (1.5, 2, 3.0),
-    ]
-)
-def test_multiplication(a, b, expected):
-    assert Operation.multiplication(a, b) == expected
+def test_divide_by_zero():
+    op = Divide()
+    with pytest.raises(OperationError):
+        op.execute(5, 0)
 
-# -----------------------------
-# Test data for division
-# -----------------------------
-@pytest.mark.parametrize(
-    "a,b,expected",
-    [
-        (6, 3, 2),
-        (5, 2, 2.5),
-        (-6, 3, -2),
-        (1.5, 0.5, 3.0),
-    ]
-)
-def test_division(a, b, expected):
-    assert Operation.division(a, b) == expected
+def test_root_even_negative_error():
+    op = Root()
+    with pytest.raises(OperationError):
+        op.execute(-4, 2)
 
-# -----------------------------
-# Division by zero
-# -----------------------------
-def test_division_by_zero():
-    with pytest.raises(ZeroDivisionError):
-        Operation.division(5, 0)
+def test_int_divide_by_zero():
+    op = IntDivide()
+    with pytest.raises(OperationError):
+        op.execute(5, 0)
 
-# -----------------------------
-# Float precision test
-# -----------------------------
-def test_division_float_precision():
-    result = Operation.division(1, 3)
-    assert abs(result - 0.3333333) < 1e-6
+def test_factory_create_known_operations():
+    for name, cls in OperationFactory.OPERATIONS.items():
+        op = OperationFactory.create_operation(name)
+        assert isinstance(op, cls)
+
+def test_factory_create_unknown_operation():
+    with pytest.raises(OperationError):
+        OperationFactory.create_operation("unknown_op")

@@ -1,65 +1,46 @@
-# tests/test_calculator.py
-
 import pytest
-from unittest.mock import patch
-from app.calculator import calculator, display_help, display_history
-from app.calculation import AddCalculation, SubtractCalculation, MultiplyCalculation, DivideCalculation
+from decimal import Decimal
+from app.calculator import Calculator
+from app.calculator_config import CalculatorConfig
+from app.calculation import Calculation
+from app.operations import Add
+from app.exceptions import OperationError
 
+def test_set_operation_and_perform_operation(tmp_path):
+    config = CalculatorConfig(base_dir=tmp_path)
+    calc = Calculator(config=config)
+    op = Add()
+    calc.set_operation(op)
+    result = calc.perform_operation(5, 3)
+    assert result == 8
+    assert len(calc.history) == 1
+    entry = calc.history[0]
+    assert isinstance(entry, Calculation)
 
-def test_display_help(capsys):
-    display_help()
-    captured = capsys.readouterr()
-    assert "Calculator Help" in captured.out
-    # Update expected example to match actual help
-    assert "add 5 10" in captured.out
+def test_perform_operation_without_operation(tmp_path):
+    calc = Calculator(config=CalculatorConfig(base_dir=tmp_path))
+    with pytest.raises(OperationError):
+        calc.perform_operation(5, 3)
 
+def test_undo_redo(tmp_path):
+    calc = Calculator(config=CalculatorConfig(base_dir=tmp_path))
+    op = Add()
+    calc.set_operation(op)
+    calc.perform_operation(2, 3)
+    assert len(calc.history) == 1
 
-@pytest.mark.parametrize(
-    "inputs, expected_outputs",
-    [
-        (["add 2 3", "exit"], ["Result: AddCalculation: 2.0 Add 3.0 = 5.0"]),
-        (["subtract 5 2", "exit"], ["Result: SubtractCalculation: 5.0 Subtract 2.0 = 3.0"]),
-        (["multiply 3 4", "exit"], ["Result: MultiplyCalculation: 3.0 Multiply 4.0 = 12.0"]),
-        (["divide 6 2", "exit"], ["Result: DivideCalculation: 6.0 Divide 2.0 = 3.0"]),
-    ]
-)
-def test_calculator_basic_operations(inputs, expected_outputs, capsys):
-    with patch("builtins.input", side_effect=inputs):
-        with pytest.raises(SystemExit):
-            calculator()
-    captured = capsys.readouterr()
-    for expected in expected_outputs:
-        assert expected in captured.out
+    assert calc.undo() is True
+    assert len(calc.history) == 0
+    assert calc.redo() is True
+    assert len(calc.history) == 1
 
-
-def test_calculator_divide_by_zero(capsys):
-    inputs = ["divide 10 0", "exit"]
-    with patch("builtins.input", side_effect=inputs):
-        with pytest.raises(SystemExit):
-            calculator()
-    captured = capsys.readouterr()
-    # Updated to match actual message
-    assert "Error: division by zero is not allowed." in captured.out
-
-
-def test_calculator_unknown_command(capsys):
-    inputs = ["foobar 1 2", "exit"]
-    with patch("builtins.input", side_effect=inputs):
-        with pytest.raises(SystemExit):
-            calculator()
-    captured = capsys.readouterr()
-    assert "Unsupported calculation type" in captured.out
-
-
-def test_calculator_help_and_history(capsys):
-    inputs = ["add 1 1", "history", "help", "exit"]
-    with patch("builtins.input", side_effect=inputs):
-        with pytest.raises(SystemExit):
-            calculator()
-    captured = capsys.readouterr()
-    # Check that history shows the calculation
-    assert "1. AddCalculation" in captured.out
-    # Check that help content is printed
-    assert "Calculator Help" in captured.out
-    # Update expected example to match actual help
-    assert "add 5 10" in captured.out
+def test_history_management(tmp_path):
+    calc = Calculator(config=CalculatorConfig(base_dir=tmp_path))
+    calc.clear_history()
+    assert calc.history == []
+    op = Add()
+    calc.set_operation(op)
+    calc.perform_operation(1, 1)
+    calc.save_history()
+    calc.load_history()
+    assert len(calc.history) == 1

@@ -8,6 +8,7 @@ from app.exceptions import OperationError
 
 class Operation:
     """Base class for all calculator operations."""
+
     def execute(self, a, b):
         raise NotImplementedError("Execute method not implemented")
 
@@ -19,6 +20,7 @@ class Operation:
 class Add(Operation):
     def execute(self, a, b):
         return float(a + b)
+
     def __str__(self):
         return "add"
 
@@ -26,6 +28,7 @@ class Add(Operation):
 class Subtract(Operation):
     def execute(self, a, b):
         return float(a - b)
+
     def __str__(self):
         return "subtract"
 
@@ -33,6 +36,7 @@ class Subtract(Operation):
 class Multiply(Operation):
     def execute(self, a, b):
         return float(a * b)
+
     def __str__(self):
         return "multiply"
 
@@ -42,6 +46,7 @@ class Divide(Operation):
         if b == 0:
             raise OperationError("Cannot divide by zero")
         return float(a / b)
+
     def __str__(self):
         return "divide"
 
@@ -49,6 +54,7 @@ class Divide(Operation):
 class Power(Operation):
     def execute(self, a, b):
         return float(a ** b)
+
     def __str__(self):
         return "power"
 
@@ -58,6 +64,7 @@ class Root(Operation):
         if a < 0 and b % 2 == 0:
             raise OperationError("Cannot take even root of negative number")
         return float(a ** (1 / b))
+
     def __str__(self):
         return "root"
 
@@ -65,6 +72,7 @@ class Root(Operation):
 class Modulus(Operation):
     def execute(self, a, b):
         return float(a % b)
+
     def __str__(self):
         return "modulus"
 
@@ -74,6 +82,7 @@ class IntDivide(Operation):
         if b == 0:
             raise OperationError("Cannot integer-divide by zero")
         return float(a // b)
+
     def __str__(self):
         return "int_divide"
 
@@ -81,6 +90,7 @@ class IntDivide(Operation):
 class Percent(Operation):
     def execute(self, a, b):
         return float((a * b) / 100)
+
     def __str__(self):
         return "percent"
 
@@ -88,12 +98,14 @@ class Percent(Operation):
 class AbsDiff(Operation):
     def execute(self, a, b):
         return float(abs(a - b))
+
     def __str__(self):
         return "abs_diff"
 
 
-# Factory to create operation instances dynamically
 class OperationFactory:
+    """Factory to create operation instances dynamically."""
+
     OPERATIONS = {
         "add": Add,
         "subtract": Subtract,
