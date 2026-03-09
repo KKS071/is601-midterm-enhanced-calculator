@@ -1,12 +1,15 @@
+########################
+# Main Application     #
+########################
+
 """
 Application entry point for the Advanced Calculator CLI.
 
-This file simply starts the calculator REPL.
+This file starts the calculator REPL with all supported operations.
 """
 
-from app.calculator import calculator
-
+from app.calculator_repl import calculator_repl
 
 if __name__ == "__main__":
-    # Start the calculator application
-    calculator()
+    # Start the calculator REPL
+    calculator_repl()
