@@ -10,10 +10,18 @@ This project is an **interactive Python calculator** implemented in a modular an
 
 ## Features
 
-* **Basic Arithmetic Operations**
+* **Supported Arithmetic Operations**
 
-  * Addition, Subtraction, Multiplication, Division
-  * Easy to extend via the **Factory Pattern** for new operations
+  * Supported Commands:
+  * add, subtract, multiply, divide, power, root, modulus, int_divide, percent, abs_diff – Perform calculations.
+  * history – Display calculation history.
+  * clear – Clear calculation history.
+  * undo – Undo the last calculation.
+  * redo – Redo the last undone calculation.
+  * save – Manually save calculation history to file using pandas.
+  * load – Load calculation history from file using pandas.
+  * help – Display available commands.
+  * exit – Exit the application gracefully.
 
 * **Interactive REPL**
 
@@ -162,9 +170,9 @@ python3 -m main.py
 * Example commands:
 
 ```text
-> add
-> subtract
-> power
+> add          # adds two numbers
+> subtract     # subtracts two numbers
+> multiply     # multiplies two numbers
 > history      # Show previous calculations
 > help         # Show help menu and list of all available commands.
 > exit         # Exit calculator
@@ -187,19 +195,11 @@ The calculator reads these values from the `.env` file using Python's `os.enviro
 
 ### 1. REPL Interaction
 
-![REPL Example](docs/repl_example.gif)
-
 ### 2. History Tracking
-
-![History Logging](docs/history_example.png)
 
 ### 3. Auto-Save Observer
 
-![Auto-Save](docs/auto_save_example.png)
-
 ### 4. Logging Observer
-
-![Logging Observer](docs/logging_example.png)
 
 ---
 
