@@ -1,10 +1,10 @@
 ---
 
-# Interactive Python Calculator
+# Interactive REPL Calculator
 
 ## Overview
 
-This project is an **interactive Python calculator** implemented in a modular and extensible way. It demonstrates advanced Python concepts such as the **Factory Pattern**, **Observer Pattern**, **Memento Pattern**, **custom exceptions**, and **history tracking**. The calculator can perform basic arithmetic operations and supports **history logging**, **auto-save**, and **unit testing** for all functionality.
+This project is an **interactive REPL calculator** implemented in a modular and extensible way using Python. It demonstrates advanced Python concepts such as the **Factory Pattern**, **Observer Pattern**, **Memento Pattern**, **custom exceptions**, and **history tracking**. The calculator can perform basic arithmetic operations and supports **history logging**, **auto-save**, and **unit testing** for all functionality.
 
 ---
 
