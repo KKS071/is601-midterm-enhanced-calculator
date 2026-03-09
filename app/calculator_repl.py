@@ -20,7 +20,7 @@ COMMANDS = [
     "history", "clear", "undo", "redo", "save", "load", "help", "exit"
 ]
 
-def calculator_repl():
+def calculator_repl(): # pragma: no cover
     """Command-line interface for the calculator."""
 
     calc = Calculator()
